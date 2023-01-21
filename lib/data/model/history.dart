@@ -28,4 +28,15 @@ class History {
       createdAt: json['created_at'],
       updatedAt: json['updated_at']
       );
+
+  Map <String,dynamic> toJson() => {
+    'id_history' : idHistory,
+    'id_user': idUser,
+    'type': type,
+    'date': date,
+    'total': total,
+    'details': details,
+    'created_at': createdAt,
+    'updated_at': updatedAt
+  };
 }
