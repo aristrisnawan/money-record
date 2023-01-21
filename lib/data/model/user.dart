@@ -1,11 +1,11 @@
 class User {
   User(
-      {required this.idUser,
-      required this.name,
-      required this.email,
-      required this.password,
-      required this.createdAt,
-      required this.updatedAt});
+      { this.idUser,
+       this.name,
+       this.email,
+       this.password,
+       this.createdAt,
+       this.updatedAt});
 
   String? idUser;
   String? name;
