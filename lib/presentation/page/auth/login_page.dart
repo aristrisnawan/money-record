@@ -54,6 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                               obscureText: false,
                               validator: (value) =>value=='' ? 'Email tidak boleh kosong' : null,
                               autovalidateMode: AutovalidateMode.onUserInteraction,
+                              style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                   fillColor: AppColor.primary,
                                   filled: true,
@@ -74,6 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                               obscureText: true,
                               validator: (value) =>value=='' ? 'Password tidak boleh kosong' : null,
                               autovalidateMode: AutovalidateMode.onUserInteraction,
+                              style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                   fillColor: AppColor.primary,
                                   filled: true,
@@ -100,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: BorderRadius.circular(30),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 30, vertical: 16),
+                                horizontal: 50, vertical: 16),
                             child: Text(
                               "LOGIN",
                               style:
