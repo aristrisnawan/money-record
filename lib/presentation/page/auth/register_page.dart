@@ -6,21 +6,22 @@ import 'package:get/get.dart';
 import 'package:money_record/config/app_asset.dart';
 import 'package:money_record/config/app_color.dart';
 import 'package:money_record/data/source/source_user.dart';
-import 'package:money_record/presentation/page/auth/register_page.dart';
+import 'package:money_record/presentation/page/auth/login_page.dart';
 import 'package:money_record/presentation/page/home_page.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final controllerEmail = TextEditingController();
   final controllerPassword = TextEditingController();
+  final controllerName = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  login() async {
+  register() async {
     if (formKey.currentState!.validate()) {
       bool success =
           await sourceUser.login(controllerEmail.text, controllerPassword.text);
@@ -66,6 +67,29 @@ class _LoginPageState extends State<LoginPage> {
                             key: formKey,
                             child: Column(
                               children: [
+                                TextFormField(
+                                  controller: controllerName,
+                                  obscureText: false,
+                                  validator: (value) => value == ''
+                                      ? 'nama tidak boleh kosong'
+                                      : null,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  style: TextStyle(color: Colors.white),
+                                  decoration: InputDecoration(
+                                      fillColor: AppColor.primary,
+                                      filled: true,
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          borderSide: BorderSide.none),
+                                      hintText: 'nama',
+                                      hintStyle: TextStyle(color: Colors.white),
+                                      isDense: true),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
                                 TextFormField(
                                   controller: controllerEmail,
                                   obscureText: false,
@@ -116,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           InkWell(
-                            onTap: () => login(),
+                            onTap: () => register(),
                             child: Material(
                               color: AppColor.primary,
                               borderRadius: BorderRadius.circular(30),
@@ -124,7 +148,7 @@ class _LoginPageState extends State<LoginPage> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 50, vertical: 16),
                                 child: Text(
-                                  "LOGIN",
+                                  "REGITER",
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 16),
                                 ),
@@ -142,15 +166,15 @@ class _LoginPageState extends State<LoginPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Belum punya akun? ",
-                          style: TextStyle(fontSize: 18,color: Colors.white),
+                          "Sudah punya akun? ",
+                          style: TextStyle(fontSize: 18, color: Colors.white),
                         ),
                         GestureDetector(
                           onTap: () {
-                            Get.back();
+                            Get.to(() => LoginPage());
                           },
                           child: Text(
-                            "Register",
+                            "Login",
                             style: TextStyle(
                                 color: AppColor.primary,
                                 fontWeight: FontWeight.bold,
