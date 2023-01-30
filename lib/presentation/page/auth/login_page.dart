@@ -147,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Get.back();
+                            Get.to(RegisterPage());
                           },
                           child: Text(
                             "Register",

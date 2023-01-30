@@ -1,4 +1,5 @@
 import 'package:d_info/d_info.dart';
+import 'package:d_method/d_method.dart';
 import 'package:d_view/d_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -24,15 +25,20 @@ class _RegisterPageState extends State<RegisterPage> {
   register() async {
     if (formKey.currentState!.validate()) {
       bool success =
-          await sourceUser.login(controllerEmail.text, controllerPassword.text);
+          await sourceUser.register(
+            controllerName.text,
+            controllerEmail.text, 
+            controllerPassword.text
+            );
 
       if (success) {
-        DInfo.dialogSuccess(context, 'Berhasil login');
+        DInfo.dialogSuccess(context, 'Berhasil register');
         DInfo.closeDialog(context, actionAfterClose: () {
           Get.off(() => HomePage());
         });
-      } else {
-        DInfo.dialogError(context, 'Gagal login');
+      }
+       else {
+        DInfo.dialogError(context, 'Gagal register');
         DInfo.closeDialog(context);
       }
     }
@@ -171,7 +177,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Get.to(() => LoginPage());
+                            Get.back();
                           },
                           child: Text(
                             "Login",
