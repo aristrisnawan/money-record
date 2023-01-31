@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart';
 import 'package:money_record/config/app_color.dart';
 import 'package:money_record/config/session.dart';
+import 'package:money_record/presentation/controller/c_user.dart';
 import 'package:money_record/presentation/page/auth/login_page.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final cUser = Get.put(CUser());
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      endDrawer: Drawer(),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,25 +56,38 @@ class HomePage extends StatelessWidget {
                           SizedBox(
                             height: 5,
                           ),
-                          Text("Indra",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20))
+                          Obx( 
+                            () {
+                              return Text(cUser.data.name.toString().capitalize ?? 'no name',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold, fontSize: 20));
+                            }
+                          )
                         ],
                       )
                     ],
                   ),
-                  Container(
-                    height: 50,
-                    width: 50,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: AppColor.secondary),
-                    child: Center(
-                      child: Icon(
-                        Icons.menu,
-                        size: 40,
-                      ),
-                    ),
+                  Builder(
+                    builder: (ctx) {
+                      return InkWell(
+                        onTap: (){
+                          Scaffold.of(ctx).openEndDrawer();
+                        },
+                        child: Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: AppColor.secondary),
+                          child: Center(
+                            child: Icon(
+                              Icons.menu,
+                              size: 40,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
                   )
                 ],
               ),
