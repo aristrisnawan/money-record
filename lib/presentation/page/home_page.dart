@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: Drawer(),
+      endDrawer: menuDrawer(),
       body: SafeArea(
         child: ListView(
           children: [
@@ -137,33 +137,7 @@ class _HomePageState extends State<HomePage> {
                 //NOTE Chart
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: AspectRatio(
-                    aspectRatio: 16 / 9,
-                    child: DChartBar(
-                      data: [
-                        {
-                          'id': 'Bar',
-                          'data': [
-                            {'domain': 'Sen', 'measure': 3},
-                            {'domain': 'Sel', 'measure': 4},
-                            {'domain': 'Rab', 'measure': 6},
-                            {'domain': 'Kam', 'measure': 0.3},
-                            {'domain': 'Jum', 'measure': 7},
-                            {'domain': 'Sab', 'measure': 5},
-                            {'domain': 'Min', 'measure': 4},
-                          ],
-                        },
-                      ],
-                      domainLabelPaddingToAxisLine: 16,
-                      axisLineTick: 2,
-                      axisLinePointTick: 2,
-                      axisLinePointWidth: 10,
-                      axisLineColor: AppColor.primary,
-                      measureLabelPaddingToAxisLine: 16,
-                      barColor: (barData, index, id) => AppColor.primary,
-                      showBarValue: true,
-                    ),
-                  ),
+                  child: weekly(),
                 ),
                 SizedBox(
                   height: 50,
@@ -178,88 +152,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(right: 24),
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.5,
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        child: Stack(
-                          children: [
-                            DChartPie(
-                              data: [
-                                {'domain': 'Pemasukan', 'measure': 60},
-                                {'domain': 'Pengeluaran', 'measure': 40},
-                              ],
-                              fillColor: (pieData, index) => Colors.purple,
-                              donutWidth: 30,
-                              labelColor: Colors.white,
-                            ),
-                            Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "60%",
-                                  style: TextStyle(
-                                      color: AppColor.primary,
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.bold),
-                                ))
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        width: 40,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                height: 17,
-                                width: 17,
-                                color: AppColor.primary,
-                              ),
-                              SizedBox(
-                                width: 7,
-                              ),
-                              Text("Pemasukan")
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              Container(
-                                height: 17,
-                                width: 17,
-                                color: AppColor.secondary,
-                              ),
-                              SizedBox(
-                                width: 7,
-                              ),
-                              Text("Pengeluaran")
-                            ],
-                          ),
-                          SizedBox(
-                            height: 22,
-                          ),
-                          Text("Pemasukan\nlebih besar 20%\ndari Pengeluaran"),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text("Atau setara :"),
-                          Text(
-                            "Rp 20.000,00",
-                            style: TextStyle(
-                                color: AppColor.primary,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
+                  child: monthly(context),
                 ),
 
                 // Text("Home Page"),
@@ -273,6 +166,232 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Drawer menuDrawer() {
+    return Drawer(
+      child: ListView(
+        children: [
+          //Header
+          DrawerHeader(
+              child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.network(
+                        'https://images.unsplash.com/photo-1527980965255-d3b416303d12?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1780&q=80',
+                        width: 50,
+                        height: 50,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 16,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Obx(() {
+                            return Text(
+                              cUser.data.name.toString().capitalize ?? 'null',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            );
+                          }
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Obx(() {
+                            return Text(cUser.data.email.toString() ?? 'null');
+                          }
+                        )
+                      ],
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 22,
+                ),
+                InkWell(
+                  onTap: () {
+                    Session.deleteUser();
+                    Get.off(() => LoginPage());
+                  },
+                  child: Container(
+                    width: 95,
+                    height: 35,
+                    decoration: BoxDecoration(
+                        color: AppColor.primary,
+                        borderRadius: BorderRadius.circular(50)),
+                    child: Center(
+                      child: Text(
+                        "Logout",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          )),
+          //Menu
+          Divider(height: 1,),
+          ListTile(
+            onTap: (){},
+            leading: Icon(Icons.add),
+            title: Text("Tambah baru"),
+            trailing: Icon(Icons.navigate_next),
+          ),
+          Divider(height: 1,),
+          ListTile(
+            onTap: (){},
+            leading: Icon(Icons.south_west),
+            title: Text("Pemasukan"),
+            trailing: Icon(Icons.navigate_next),
+          ),
+          Divider(height: 1,),
+          ListTile(
+            onTap: (){},
+            leading: Icon(Icons.north_east),
+            title: Text("Pengeluaran"),
+            trailing: Icon(Icons.navigate_next),
+          ),
+          Divider(height: 1,),
+          ListTile(
+            onTap: (){},
+            leading: Icon(Icons.history),
+            title: Text("Riwayat"),
+            trailing: Icon(Icons.navigate_next),
+          ),
+          Divider(height: 1,),
+        ],
+      ),
+    );
+  }
+
+  Row monthly(BuildContext context) {
+    return Row(
+      children: [
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.4,
+          width: MediaQuery.of(context).size.width * 0.5,
+          child: Stack(
+            children: [
+              DChartPie(
+                data: [
+                  {'domain': 'Pemasukan', 'measure': 60},
+                  {'domain': 'Pengeluaran', 'measure': 40},
+                ],
+                fillColor: (pieData, index) => Colors.purple,
+                donutWidth: 30,
+                labelColor: Colors.white,
+              ),
+              Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "60%",
+                    style: TextStyle(
+                        color: AppColor.primary,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold),
+                  ))
+            ],
+          ),
+        ),
+        SizedBox(
+          width: 40,
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  height: 17,
+                  width: 17,
+                  color: AppColor.primary,
+                ),
+                SizedBox(
+                  width: 7,
+                ),
+                Text("Pemasukan")
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                Container(
+                  height: 17,
+                  width: 17,
+                  color: AppColor.secondary,
+                ),
+                SizedBox(
+                  width: 7,
+                ),
+                Text("Pengeluaran")
+              ],
+            ),
+            SizedBox(
+              height: 22,
+            ),
+            Text("Pemasukan\nlebih besar 20%\ndari Pengeluaran"),
+            SizedBox(
+              height: 10,
+            ),
+            Text("Atau setara :"),
+            Text(
+              "Rp 20.000,00",
+              style: TextStyle(
+                  color: AppColor.primary,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
+            )
+          ],
+        )
+      ],
+    );
+  }
+
+  AspectRatio weekly() {
+    return AspectRatio(
+      aspectRatio: 16 / 9,
+      child: DChartBar(
+        data: [
+          {
+            'id': 'Bar',
+            'data': [
+              {'domain': 'Sen', 'measure': 3},
+              {'domain': 'Sel', 'measure': 4},
+              {'domain': 'Rab', 'measure': 6},
+              {'domain': 'Kam', 'measure': 0.3},
+              {'domain': 'Jum', 'measure': 7},
+              {'domain': 'Sab', 'measure': 5},
+              {'domain': 'Min', 'measure': 4},
+            ],
+          },
+        ],
+        domainLabelPaddingToAxisLine: 16,
+        axisLineTick: 2,
+        axisLinePointTick: 2,
+        axisLinePointWidth: 10,
+        axisLineColor: AppColor.primary,
+        measureLabelPaddingToAxisLine: 16,
+        barColor: (barData, index, id) => AppColor.primary,
+        showBarValue: true,
       ),
     );
   }

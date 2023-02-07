@@ -1,4 +1,5 @@
 import 'package:d_info/d_info.dart';
+import 'package:d_method/d_method.dart';
 import 'package:d_view/d_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -27,10 +28,12 @@ class _LoginPageState extends State<LoginPage> {
 
       if (success) {
         DInfo.dialogSuccess(context, 'Berhasil login');
+        DMethod.printTitle("login", "berhasil");
         DInfo.closeDialog(context, actionAfterClose: () {
           Get.off(() => HomePage());
         });
       } else {
+        DMethod.printTitle("login", "gagal");
         DInfo.dialogError(context, 'Gagal login');
         DInfo.closeDialog(context);
       }
@@ -117,6 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           InkWell(
                             onTap: () => login(),
+                            borderRadius: BorderRadius.circular(30),
                             child: Material(
                               color: AppColor.primary,
                               borderRadius: BorderRadius.circular(30),
