@@ -176,21 +176,89 @@ class _HomePageState extends State<HomePage> {
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 ),
-                SizedBox(
-                  height: 40,
-                ),
-                AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: DChartPie(
-                    data: [
-                      {'domain': 'Flutter', 'measure': 28},
-                      {'domain': 'React Native', 'measure': 27},
-                      {'domain': 'Ionic', 'measure': 20},
-                      {'domain': 'Cordova', 'measure': 15},
+                Padding(
+                  padding: const EdgeInsets.only(right: 24),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        child: Stack(
+                          children: [
+                            DChartPie(
+                              data: [
+                                {'domain': 'Pemasukan', 'measure': 60},
+                                {'domain': 'Pengeluaran', 'measure': 40},
+                              ],
+                              fillColor: (pieData, index) => Colors.purple,
+                              donutWidth: 30,
+                              labelColor: Colors.white,
+                            ),
+                            Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "60%",
+                                  style: TextStyle(
+                                      color: AppColor.primary,
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold),
+                                ))
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: 40,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                height: 17,
+                                width: 17,
+                                color: AppColor.primary,
+                              ),
+                              SizedBox(
+                                width: 7,
+                              ),
+                              Text("Pemasukan")
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                height: 17,
+                                width: 17,
+                                color: AppColor.secondary,
+                              ),
+                              SizedBox(
+                                width: 7,
+                              ),
+                              Text("Pengeluaran")
+                            ],
+                          ),
+                          SizedBox(
+                            height: 22,
+                          ),
+                          Text("Pemasukan\nlebih besar 20%\ndari Pengeluaran"),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text("Atau setara :"),
+                          Text(
+                            "Rp 20.000,00",
+                            style: TextStyle(
+                                color: AppColor.primary,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      )
                     ],
-                    fillColor: (pieData, index) => Colors.purple,
-                    donutWidth: 30,
-                    labelColor: Colors.white,
                   ),
                 ),
 
