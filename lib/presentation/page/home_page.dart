@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:money_record/config/app_color.dart';
+import 'package:money_record/config/app_format.dart';
 import 'package:money_record/config/session.dart';
+import 'package:money_record/presentation/controller/c_home.dart';
 import 'package:money_record/presentation/controller/c_user.dart';
 import 'package:money_record/presentation/page/auth/login_page.dart';
 import 'package:d_chart/d_chart.dart';
@@ -16,7 +18,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final cUser = Get.put(CUser());
+  final cHome = Get.put(CHome());
   @override
+  void initState() {
+    // TODO: implement initState
+    cHome.getAnalysis(cUser.data.idUser!);
+    super.initState();
+  }
   Widget build(BuildContext context) {
     return Scaffold(
       endDrawer: menuDrawer(),
@@ -411,22 +419,29 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: 24,
               ),
-              Text(
-                "Rp 500.000,00",
-                style: TextStyle(
-                    color: AppColor.secondary,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30),
+              Obx( 
+                () {
+                  return Text(
+                    AppFormat.currency(cHome.today.toString()),
+                    style: TextStyle(
+                        color: AppColor.secondary,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30),
+                  );
+                }
               ),
               SizedBox(
                 height: 10,
               ),
-              Text(
-                "+20% dibanding kemarin",
-                style: TextStyle(
-                    color: AppColor.secondary,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400),
+              Obx(() {
+                  return Text(
+                    cHome.todayPercent.toString(),
+                    style: TextStyle(
+                        color: AppColor.secondary,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400),
+                  );
+                }
               ),
               SizedBox(
                 height: 27,
